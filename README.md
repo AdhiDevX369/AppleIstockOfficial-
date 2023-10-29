@@ -1,7 +1,5 @@
 # AppleIstockOfficial
 
-![AppleIstockOfficial Logo](/path/to/logo.png)
-
 AppleIstockOfficial is a simple inventory management system designed for small businesses. It helps businesses keep track of their products, manage sales, and generate reports.
 
 ## Features

@@ -1,7 +1,12 @@
 package Controller;
 
+// Import for managing database connections
 import java.sql.Connection;
+
+// Import for loading database drivers and establishing connections
 import java.sql.DriverManager;
+
+// Import for handling exceptions related to database operations
 import java.sql.SQLException;
 
 public class DatabaseController {
@@ -44,5 +49,5 @@ public class DatabaseController {
             e.printStackTrace();
         }
     }
-    
+
 }

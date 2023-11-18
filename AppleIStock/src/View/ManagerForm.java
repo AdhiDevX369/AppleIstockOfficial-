@@ -4,18 +4,39 @@
  */
 package View;
 
+// Import a custom model class for products
 import Models.Product;
+
+// Import the controller class responsible for managing the application
 import Controller.ManagerController;
+
+// Import the User model class, which likely represents user information
 import Models.User;
+
+// Import necessary classes for handling actions and events
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+// Import a class for formatting dates
 import java.text.SimpleDateFormat;
+
+// Import a class for working with dates
 import java.util.Date;
+
+// Import a list data structure to manage collections of data
 import java.util.List;
+
+// Import classes for displaying dialog boxes and user notifications
 import javax.swing.JOptionPane;
+
+// Import a class for handling time-related events using timers
 import javax.swing.Timer;
+
+// Import classes for handling selection events in a table
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+// Import a class for managing and displaying tabular data in GUI components
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -96,76 +117,78 @@ public class ManagerForm extends javax.swing.JFrame {
                     java.awt.EventQueue.invokeLater(() -> {
                         new ManageUserForm(user).setVisible(true);
                     });
-                }else{
-                     JOptionPane.showMessageDialog(null, "You Dont Have Access.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                } else {
+                    JOptionPane.showMessageDialog(null, "You Dont Have Access.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            );
+        }
+        );
+
+        btnViewSales.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if ("Manager".equals(user.getPosition())) {
+                    // Open ManagerForm with the user object
+                    java.awt.EventQueue.invokeLater(() -> {
+                        new SalesForm(user).setVisible(true);
+                    });
+                } else {
+                    JOptionPane.showMessageDialog(null, "You Dont Have Access.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        );
         // Initialize your product table model
-        productTableModel  = new DefaultTableModel();
+        productTableModel = new DefaultTableModel();
 
-            productTableModel.addColumn (
-                    
-
-            "Product ID");
-            productTableModel.addColumn (
-                    
-
-            "Product Name");
-            productTableModel.addColumn (
-                    
-
-            "Price");
-            productTableModel.addColumn (
-                    
-
-            "Qty");
-            productTableModel.addColumn (
-                    
-
-            "Category");
+        productTableModel.addColumn(
+                "Product ID");
+        productTableModel.addColumn(
+                "Product Name");
+        productTableModel.addColumn(
+                "Price");
+        productTableModel.addColumn(
+                "Qty");
+        productTableModel.addColumn(
+                "Category");
 
         // Set the table model for your product table
-            viewProductTable.setModel (productTableModel);
+        viewProductTable.setModel(productTableModel);
 
-            // Load product data when the form is initialized
-            loadProductData();
+        // Load product data when the form is initialized
+        loadProductData();
 
-            Timer timer = new Timer(1000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    updateDateAndTimeLabel();
-                }
-            });
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateDateAndTimeLabel();
+            }
+        });
 
-            timer.start ();
+        timer.start();
 
-            viewProductTable.getSelectionModel () 
+        viewProductTable.getSelectionModel()
                 .addListSelectionListener(new ListSelectionListener() {
                     @Override
-                public void valueChanged
-                (ListSelectionEvent e
-                
+                    public void valueChanged(ListSelectionEvent e
                     ) {
                         if (!e.getValueIsAdjusting() && viewProductTable.getSelectedRow() != -1) {
-                        int selectedRow = viewProductTable.getSelectedRow();
+                            int selectedRow = viewProductTable.getSelectedRow();
 
-                        // Get the product data from the selected row
-                        int productId = (int) viewProductTable.getValueAt(selectedRow, 0); // Assuming the first column contains product ID
-                        String productName = (String) viewProductTable.getValueAt(selectedRow, 1); // Assuming the second column contains product name
-                        double price = (double) viewProductTable.getValueAt(selectedRow, 2); // Assuming the third column contains price
-                        int quantity = (int) viewProductTable.getValueAt(selectedRow, 3); // Assuming the fourth column contains quantity
-                        String category = (String) viewProductTable.getValueAt(selectedRow, 4); // Assuming the fifth column contains category
+                            // Get the product data from the selected row
+                            int productId = (int) viewProductTable.getValueAt(selectedRow, 0); // Assuming the first column contains product ID
+                            String productName = (String) viewProductTable.getValueAt(selectedRow, 1); // Assuming the second column contains product name
+                            double price = (double) viewProductTable.getValueAt(selectedRow, 2); // Assuming the third column contains price
+                            int quantity = (int) viewProductTable.getValueAt(selectedRow, 3); // Assuming the fourth column contains quantity
+                            String category = (String) viewProductTable.getValueAt(selectedRow, 4); // Assuming the fifth column contains category
 
-                        // Create a Product instance from the selected data
-                        selectedProduct = new Product(productId, productName, price, category, quantity) {
-                        };
+                            // Create a Product instance from the selected data
+                            selectedProduct = new Product(productId, productName, price, category, quantity) {
+                            };
+                        }
                     }
                 }
-            }
-        );
-            
+                );
 
     }
 
@@ -193,7 +216,6 @@ public class ManagerForm extends javax.swing.JFrame {
 
         lblDateAndTime.setText("Date and Time: " + formattedDate); // Update the label text
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -684,9 +706,9 @@ public class ManagerForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-       LoginForm login = new LoginForm();
-       login.setVisible(true);
-       this.dispose();
+        LoginForm login = new LoginForm();
+        login.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**

@@ -1,16 +1,16 @@
 package Controller;
 
-import Models.User;
-import Models.Product;
+import Models.User;        // Import the User model, which represents user information.
+import Models.Product;     // Import the Product model, which represents product information.
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Connection;        // Import the Connection class from the Java SQL package for database connections.
+import java.sql.PreparedStatement;    // Import the PreparedStatement class for executing parameterized SQL queries.
+import java.sql.ResultSet;        // Import the ResultSet class for retrieving query results.
+import java.sql.SQLException;     // Import the SQLException class for handling database-related exceptions.
+import java.util.ArrayList;        // Import the ArrayList class for creating dynamic arrays.
+import java.util.List;            // Import the List interface for working with lists of objects.
+import java.util.logging.Level;    // Import the Level class from the logging package to specify log levels.
+import java.util.logging.Logger;    // Import the Logger class for logging messages and exceptions.
 
 public class CashierController extends User {
 
@@ -147,7 +147,7 @@ public class CashierController extends User {
     }
 
     // Method to sell a product
-    public boolean sellProduct(int productId, int userId, int quantity, double price) {
+    public boolean sellProduct(int productId, int userId, String nic, int quantity, double price, String invoice_number) {
         Connection connection = null;
         PreparedStatement sellStatement = null;
 
@@ -158,12 +158,14 @@ public class CashierController extends User {
             connection = DatabaseController.getInstance().getConnection();
 
             // Prepare a SQL statement to insert a record into the sales table
-            String insertSalesSQL = "INSERT INTO sales (product_id, userid, sale_date, sale_quantity, sale_price) VALUES (?, ?, NOW(), ?, ?)";
+            String insertSalesSQL = "INSERT INTO sales (product_id, userid, sale_date, nic, sale_quantity, sale_price, invoice_number) VALUES (?, ?, NOW(), ?, ?, ?,?)";
             sellStatement = connection.prepareStatement(insertSalesSQL);
             sellStatement.setInt(1, productId);
             sellStatement.setInt(2, userId);
-            sellStatement.setInt(3, quantity);
-            sellStatement.setDouble(4, price);
+            sellStatement.setString(3, nic);
+            sellStatement.setInt(4, quantity);
+            sellStatement.setDouble(5, price);
+                sellStatement.setString(6, invoice_number);
 
             // Disable auto-commit to ensure transaction consistency
             connection.setAutoCommit(false);

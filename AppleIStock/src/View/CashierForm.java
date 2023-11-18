@@ -1,21 +1,51 @@
 package View;
 
+// Models for product and user data
 import Models.Product;
+import Models.User;
+
+// Event handling and listeners
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-
-import Controller.CashierController;
-import Models.User;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
-import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+// Controller for the Cashier application
+import Controller.CashierController;
+
+// Date and time formatting
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+// Collections for managing data
+import java.util.List;
+
+// DefaultListModel for maintaining the invoice list
+import javax.swing.DefaultListModel;
+
+// User interface components
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+
+// iText PDF library for PDF generation
+import com.itextpdf.io.exceptions.IOException;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+
+// Handling file exceptions
+import java.io.FileNotFoundException;
+
+// Logging and error handling
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class CashierForm extends javax.swing.JFrame {
 
@@ -164,16 +194,6 @@ public class CashierForm extends javax.swing.JFrame {
                 }
             }
         });
-
-        btnCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Clear the text fields without adding the data
-                txtProductName.setText("");
-                txtPrice.setText("");
-                txtQty.setText("");
-            }
-        });
         btnPrintInvoice.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -183,39 +203,114 @@ public class CashierForm extends javax.swing.JFrame {
                 } else {
                     boolean allSalesSuccessful = true;
 
-                    for (int i = 0; i < invoiceListModel.size(); i++) {
-                        String productInfo = invoiceListModel.get(i);
-                        String[] productData = productInfo.split("\\|");
-                        String productName = productData[0].trim().split(":")[1].trim();
-                        double price = Double.parseDouble(productData[1].trim().split(":")[1].trim().replace("$", ""));
-                        int quantity = Integer.parseInt(productData[2].trim().split(":")[1].trim());
+                    try {
+                        // Define the PDF file path and name
+                        String pdfFileName = "invoice.pdf";
+                        PdfWriter pdfWriter = new PdfWriter(pdfFileName);
+                        PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+                        Document document = new Document(pdfDocument);
+                        
+                        // Use embedded Arial font
+                        PdfFont font = PdfFontFactory.createFont();
+                        float fontSize = 12;
+                        float headerFontSize = 20;
+                        float midFontSize = 14;
+                        // Create a table for product details with headers
+                        Table productTable = new Table(UnitValue.createPercentArray(new float[]{40, 20, 20, 20}));
+                        productTable.setWidth(UnitValue.createPercentValue(100));
+                        // Add table headers
+                        productTable.addHeaderCell("Product Name");
+                        productTable.addHeaderCell("Quantity");
+                        productTable.addHeaderCell("Price per Unit");
+                        productTable.addHeaderCell("Total Price");
+                        String invoice_number = generateInvoiceNumber();
+                        for (int i = 0; i < invoiceListModel.size(); i++) {
+                            String productInfo = invoiceListModel.get(i);
+                            String[] productData = productInfo.split("\\|");
+                            String productName = productData[0].trim().split(":")[1].trim();
+                            double price = Double.parseDouble(productData[1].trim().split(":")[1].trim().replace("$", ""));
+                            int quantity = Integer.parseInt(productData[2].trim().split(":")[1].trim());
 
-                        System.out.println(quantity);
+                            double productPrice = price * quantity;
+                            // Get the product ID for the sold product (You may need to fetch it from the database)
+                            int productId = getProductIdByName(productName);
 
-                        double productPrice = price * quantity;
-                        // Get the product ID for the sold product (You may need to fetch it from the database)
-                        int productId = getProductIdByName(productName);
+                            // Add product details to the table
+                            productTable.addCell(productName);
+                            productTable.addCell(String.valueOf(quantity));
+                            productTable.addCell("$" + price);
+                            productTable.addCell("$" + productPrice);
 
-                        // Sell the product and update its quantity
-                        if (!cashier.sellProduct(productId, user.getUserId(), quantity, productPrice)) {
-                            allSalesSuccessful = false;
-
-                            break; // Stop selling products and break the loop if one sale fails
+                            // Sell the product and update its quantity
+                            if (!cashier.sellProduct(productId, user.getUserId(), user.getNic(), quantity, productPrice, invoice_number)) {
+                                allSalesSuccessful = false;
+                                break; // Stop selling products and break the loop if one sale fails
+                            }
                         }
-                    }
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String formattedDate = sdf.format(new Date()); // Get the current date and time
+                        // Add the invoice header with styled text
+                        Paragraph invoiceHeader = new Paragraph()
+                                .setFont(font)
+                                .setFontSize(headerFontSize)
+                                .add("BILL INVOICE")
+                                .add("\nInvoiceNo: " + invoice_number)
+                                .add("\n------------------------------- ")
+                                .setTextAlignment(TextAlignment.CENTER);
 
-                    if (allSalesSuccessful) {
-                        // Successfully sold products and updated quantities
-                        loadProductData(); // Update the product table
-                        invoiceListModel.clear(); // Clear the invoice list
-                        lblBill.setText(" ");
-                        lblQty.setText(" ");
-                        // Show a success message
-                        JOptionPane.showMessageDialog(CashierForm.this, "Sales records added and product table updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        // Handle sale failure
-                        // You can show an error message here
-                        JOptionPane.showMessageDialog(CashierForm.this, "Failed to add sales records and update product table.", "Error", JOptionPane.ERROR_MESSAGE);
+                        Paragraph invoiceMid = new Paragraph()
+                                .setFont(font)
+                                .setFontSize(midFontSize)
+                                .add("\nDate: " + formattedDate)
+                                .add("\nContact No: +94 712 494 420")
+                                .add("\nEmail: info@adhistore.com")
+                                .add("\nCompany: ADHI STORE")
+                                .add("\n-----------------------")
+                                .setTextAlignment(TextAlignment.CENTER);
+
+                        Paragraph lowerInvoice = new Paragraph()
+                                .setFont(font)
+                                .setFontSize(fontSize)
+                                .add("\n Total Price: $" + totalBill)
+                                .add("\nCashier: " + user.getName())
+                                .add("\n")
+                                .setTextAlignment(TextAlignment.LEFT);
+
+                        Paragraph end = new Paragraph()
+                                .setFont(font)
+                                .setFontSize(midFontSize)
+                                .add("\n***** THANK YOU COME AGAIN *****")
+                                .setTextAlignment(TextAlignment.CENTER);
+
+                        // Add product details to the PDF document with styled text
+                        document.add(invoiceHeader);
+                        document.add(invoiceMid);
+                        document.add(productTable);
+                        document.add(lowerInvoice);
+                        document.add(end);
+
+                        document.close(); // Close the PDF document
+
+                        if (allSalesSuccessful) {
+                            // Successfully sold products and updated quantities
+                            loadProductData(); // Update the product table
+                            invoiceListModel.clear(); // Clear the invoice list
+                            lblBill.setText(" ");
+                            lblQty.setText(" ");
+
+                            // Show a success message
+                            JOptionPane.showMessageDialog(CashierForm.this, "Sales records added and product table updated successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            // Handle sale failure
+                            // You can show an error message here
+                            JOptionPane.showMessageDialog(CashierForm.this, "Failed to add sales records and update product table.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(CashierForm.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (java.io.IOException ex) {
+                        Logger.getLogger(CashierForm.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             }
@@ -287,6 +382,25 @@ public class CashierForm extends javax.swing.JFrame {
 
     }
 
+public static String generateInvoiceNumber() {
+    // Format the current date and time to include in the invoice number
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+    String formattedDate = dateFormat.format(new Date());
+
+    // Generate a random number (you can replace this with a more sophisticated logic)
+    int randomNumber = (int) (Math.random() * 1000);
+
+    // Combine the formatted date and random number to create the invoice number
+    String invoiceNumber = "INV" + formattedDate + String.format("%03d", randomNumber);
+
+    // Take only the last 5 characters to ensure the total length is 5
+    invoiceNumber = invoiceNumber.substring(Math.max(0, invoiceNumber.length() - 5));
+
+    return invoiceNumber;
+}
+
+
+
     private void updateProductQuantity() {
         if (selectedProduct != null) {
             int currentRow = -1;
@@ -346,18 +460,6 @@ public class CashierForm extends javax.swing.JFrame {
             }
         }
         return quantity;
-    }
-
-    private double extractPriceFromProductInfo(String productInfo) {
-        double price = 0;
-        String[] infoParts = productInfo.split("\\|");
-        for (String part : infoParts) {
-            if (part.contains("Price: $")) {
-                price = Double.parseDouble(part.replace("Price: $", "").trim());
-                break;
-            }
-        }
-        return price;
     }
 
     private String extractProductNameFromProductInfo(String productInfo) {

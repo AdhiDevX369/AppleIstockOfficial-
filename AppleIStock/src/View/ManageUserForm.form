@@ -30,7 +30,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="userManagerPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -44,12 +44,13 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="managerDPanel" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
                   <Component id="managerDPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
@@ -71,10 +72,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jScrollPane2" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="commonPannel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
@@ -82,59 +80,62 @@
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="lblSetEmail" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSetAddress" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSetPassword" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblSetFullname" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblSetUsername" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblSetAddress" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblSetPosition" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                          <Component id="txtSetUsername" pref="130" max="32767" attributes="0"/>
-                                          <Component id="txtSetFullname" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="txtSetPassword" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
-                                          <Component id="txtSetEmaill" alignment="0" max="32767" attributes="0"/>
+                                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="1" attributes="0">
+                                          <Group type="103" alignment="1" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="txtSetUsername" max="32767" attributes="0"/>
+                                              <Component id="txtSetFullname" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="txtSetEmaill" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jScrollPane1" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="cmbPosition" min="-2" pref="130" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="80" pref="129" max="32767" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="lblSetNIC" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="lblSetPhone" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="lblSetPosition" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="btnAdd" min="-2" pref="250" max="-2" attributes="0"/>
+                                                  <Component id="btnUpdate" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
                                               </Group>
-                                              <EmptySpace min="-2" pref="98" max="-2" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="txtSetPhone" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
-                                                  <Component id="txtSetNIC" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
-                                                  <Component id="cmbPosition" alignment="1" min="-2" pref="130" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="btnAdd" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
-                                                  <Component id="btnUpdate" alignment="1" min="-2" pref="250" max="-2" attributes="0"/>
+                                                  <Component id="lblAlert" alignment="1" max="32767" attributes="0"/>
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <Group type="103" groupAlignment="0" attributes="0">
+                                                          <Component id="lblSetNIC" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="lblSetPhone" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="lblSetPassword" min="-2" max="-2" attributes="0"/>
+                                                      </Group>
+                                                      <EmptySpace max="32767" attributes="0"/>
+                                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                          <Component id="txtSetNIC" alignment="1" pref="241" max="32767" attributes="0"/>
+                                                          <Component id="txtSetPhone" alignment="1" max="32767" attributes="0"/>
+                                                          <Component id="txtSetPassword" alignment="1" max="32767" attributes="0"/>
+                                                      </Group>
+                                                  </Group>
                                               </Group>
-                                              <EmptySpace max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="panelManageBtn" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="panelManageBtn" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="SearchPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="150" max="-2" attributes="0"/>
@@ -144,45 +145,60 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="panelManageBtn" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jScrollPane1" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="lblSetUsername" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtSetUsername" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSetNIC" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtSetNIC" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="txtSetNIC" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="lblSetFullname" min="-2" max="-2" attributes="0"/>
-                                          <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                                              <Component id="txtSetFullname" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="lblSetPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtSetPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <Component id="txtSetPhone" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="lblSetPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtSetPassword" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblSetPosition" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cmbPosition" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="txtSetPassword" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                                      <Component id="btnAdd" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="lblAlert" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="btnUpdate" min="-2" pref="40" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="3" attributes="0">
+                                                  <Component id="lblSetUsername" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtSetUsername" alignment="3" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lblSetFullname" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="txtSetFullname" alignment="1" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="cmbPosition" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="lblSetPosition" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                              <Component id="lblSetNIC" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
+                                              <Component id="lblSetPhone" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="lblSetPassword" min="-2" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="txtSetEmaill" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="btnAdd" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                                           <Component id="lblSetEmail" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                              <Component id="btnUpdate" min="-2" pref="40" max="-2" attributes="0"/>
-                                          </Group>
                                           <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                                               <Component id="lblSetAddress" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="jScrollPane1" min="-2" pref="50" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -373,7 +389,7 @@
                           <Component id="btnEdit" min="-2" pref="120" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btnRemove" min="-2" pref="139" max="-2" attributes="0"/>
-                          <EmptySpace pref="82" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnViewSales" min="-2" pref="240" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -407,6 +423,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="View Sales"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnViewSalesActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnEdit">
                   <Properties>
@@ -616,6 +635,9 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtSetPasswordActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="lblSetNIC">
               <Properties>
@@ -780,9 +802,8 @@
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="2">
-                    <StringItem index="0" value="Select Poition"/>
-                    <StringItem index="1" value="Cashier"/>
+                  <StringArray count="1">
+                    <StringItem index="0" value="Cashier"/>
                   </StringArray>
                 </Property>
               </Properties>
@@ -850,6 +871,17 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblAlert">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="12" style="1"/>
+                </Property>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="33" green="33" red="ff" type="rgb"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value=" "/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

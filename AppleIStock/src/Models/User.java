@@ -1,13 +1,15 @@
 package Models;
 
-import Controller.DatabaseController;
-import Controller.CashierController;
-import Controller.ManagerController;
+// Import necessary controllers to manage different parts of the application
+import Controller.DatabaseController; // DatabaseController manages database connections
+import Controller.CashierController; // CashierController handles operations related to cashiers
+import Controller.ManagerController; // ManagerController manages manager-related functions
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+// Import JDBC classes for database operations
+import java.sql.Connection; // Connection is used to establish a connection to the database
+import java.sql.PreparedStatement; // PreparedStatement is used for executing parameterized SQL queries
+import java.sql.ResultSet; // ResultSet stores the results of a database query
+import java.sql.SQLException; // SQLException is used to handle database-related errors
 
 public class User {
 

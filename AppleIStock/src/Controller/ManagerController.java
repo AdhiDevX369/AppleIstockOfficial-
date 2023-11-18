@@ -1,13 +1,20 @@
 package Controller;
 
+// Import the User and Product classes from the Models package to use them in this code
 import Models.User;
 import Models.Product;
+
+// Import the necessary classes for working with a SQL database
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+// Import ArrayList and List to work with collections of data
 import java.util.ArrayList;
 import java.util.List;
+
+// Import the necessary classes for logging and handling exceptions
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

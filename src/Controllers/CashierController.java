@@ -25,7 +25,7 @@ public class CashierController extends User {
     // Example: methods for viewing products, creating invoices, adding sales, etc.
     // For instance:
     public List<ProductData> viewAllProductData() {
-        return productDataDAO.viewAllProductData();
+       return productDataDAO.getUnsoldProducts();
     }
 
     public List<Product> viewAllCategoryData() {
@@ -37,7 +37,10 @@ public class CashierController extends User {
             return productDataDAO.getSoldProducts();
         } else if ("unsold".equals(status)) {
             return productDataDAO.getUnsoldProducts();
-        } else {
+        } if("all".equals(status)){
+             return productDataDAO.viewAllProductData();
+        } 
+        else {
             // Handle other cases or invalid status here
             // For example, return all products if the status is not recognized
             return productDataDAO.viewAllProductData(); // Return all products

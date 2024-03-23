@@ -171,8 +171,8 @@ public class ProductDataDAO {
         }
     }
 
-    public boolean updateProductData(String eminum, String newProductName, String newCategory, int newProductId, String newStatus) {
-        String query = "UPDATE ProductData SET productid = ?, productname = ?, category = ?, status = ? WHERE eminum = ?";
+    public boolean updateProductData(String eminum, String newProductName, String newCategory, int newProductId, String newStatus, double newPrice) {
+        String query = "UPDATE ProductData SET productid = ?, productname = ?, category = ?, status = ?, price = ? WHERE eminum = ?";
 
         try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query);) {
 
@@ -180,7 +180,8 @@ public class ProductDataDAO {
             preparedStatement.setString(2, newProductName);
             preparedStatement.setString(3, newCategory);
             preparedStatement.setString(4, newStatus);
-            preparedStatement.setString(5, eminum);
+            preparedStatement.setDouble(5, newPrice);
+            preparedStatement.setString(6, eminum);
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0; // Returns true if at least one row was affected (i.e., product data updated)

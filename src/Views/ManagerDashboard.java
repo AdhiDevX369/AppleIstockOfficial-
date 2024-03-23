@@ -5,9 +5,15 @@
 package Views;
 
 import Controllers.ManagerController;
-import Models.Product;
+import Controllers.UserController;
 import Models.User;
-import javax.swing.table.DefaultTableModel;
+import Views.ManagerViews.ManageProduct;
+import Views.ManagerViews.ManageSales;
+import Views.ManagerViews.ManageUsers;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,14 +21,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ManagerDashboard extends javax.swing.JFrame {
 
-     private DefaultTableModel productTableModel;
-    private Product selectedProduct;
-    private int selectedProductId;
     private ManagerController manager;
-    
+    private UserController currentUser;
+    private User user;
+
     public ManagerDashboard(User user) {
         initComponents();
         manager = new ManagerController(user.getUserId(), user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getEmail(), user.getMobile(), user.getNic());
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.user = user;
+        currentUser = new UserController();
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirmed = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to exit?", "Exit Confirmation",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirmed == JOptionPane.YES_OPTION) {
+                    System.exit(0); // Close the window
+                    // Optionally, perform actions to exit the application
+                }
+            }
+        });
+
     }
 
     /**
@@ -34,57 +56,318 @@ public class ManagerDashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        managerContainer = new javax.swing.JPanel();
+        managerNavContainer = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
+        managerBodyContainer = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        btnOpenManageProduct = new javax.swing.JButton();
+        btnOpenManageUser = new javax.swing.JButton();
+        btnOpenManageSale = new javax.swing.JButton();
+        lblOpenManageeUser = new javax.swing.JLabel();
+        lblOpenManageSale = new javax.swing.JLabel();
+        lblOpenManageProduct = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+
+        jToggleButton1.setText("jToggleButton1");
+
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 750));
+        setTitle("Manager Dashboard");
+        setPreferredSize(new java.awt.Dimension(1000, 500));
         setSize(new java.awt.Dimension(1000, 750));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
+        managerContainer.setBackground(new java.awt.Color(0, 102, 102));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("E:\\Resouces\\1edb1a1d61b419c1afc1e943f66e7766.png")); // NOI18N
-        jLabel1.setText("jLabel1");
+        managerNavContainer.setBackground(new java.awt.Color(51, 51, 51));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 925, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+        jLabel2.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("MANAGER DASHBOARD");
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/img/nav.gif"))); // NOI18N
+        jLabel3.setText("jLabel3");
+
+        btnLogout.setBackground(new java.awt.Color(0, 102, 102));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("LogOut");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout managerNavContainerLayout = new javax.swing.GroupLayout(managerNavContainer);
+        managerNavContainer.setLayout(managerNavContainerLayout);
+        managerNavContainerLayout.setHorizontalGroup(
+            managerNavContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(managerNavContainerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+        managerNavContainerLayout.setVerticalGroup(
+            managerNavContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(managerNavContainerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(managerNavContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(managerNavContainerLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(managerNavContainerLayout.createSequentialGroup()
+                        .addGroup(managerNavContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 9, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        managerBodyContainer.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/img/Manager.gif"))); // NOI18N
+
+        btnOpenManageProduct.setBackground(new java.awt.Color(0, 102, 102));
+        btnOpenManageProduct.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnOpenManageProduct.setForeground(new java.awt.Color(255, 255, 255));
+        btnOpenManageProduct.setText("Manage Products");
+        btnOpenManageProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenManageProductActionPerformed(evt);
+            }
+        });
+
+        btnOpenManageUser.setBackground(new java.awt.Color(0, 102, 102));
+        btnOpenManageUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnOpenManageUser.setForeground(new java.awt.Color(255, 255, 255));
+        btnOpenManageUser.setText("Manage Users");
+        btnOpenManageUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenManageUserActionPerformed(evt);
+            }
+        });
+
+        btnOpenManageSale.setBackground(new java.awt.Color(0, 102, 102));
+        btnOpenManageSale.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnOpenManageSale.setForeground(new java.awt.Color(255, 255, 255));
+        btnOpenManageSale.setText("Analize Sales");
+        btnOpenManageSale.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenManageSaleActionPerformed(evt);
+            }
+        });
+
+        lblOpenManageeUser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/img/usermanage.gif"))); // NOI18N
+        lblOpenManageeUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblOpenManageeUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOpenManageeUserMouseClicked(evt);
+            }
+        });
+
+        lblOpenManageSale.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/img/salesmanage.gif"))); // NOI18N
+        lblOpenManageSale.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblOpenManageSale.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOpenManageSaleMouseClicked(evt);
+            }
+        });
+
+        lblOpenManageProduct.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Views/img/productmanage.gif"))); // NOI18N
+        lblOpenManageProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblOpenManageProduct.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOpenManageProductMouseClicked(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Welcome to the Manager Dashboard");
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel8.setText("This dashboard provides access to various managerial features");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel9.setText("Manage employees, view reports, and more.");
+
+        javax.swing.GroupLayout managerBodyContainerLayout = new javax.swing.GroupLayout(managerBodyContainer);
+        managerBodyContainer.setLayout(managerBodyContainerLayout);
+        managerBodyContainerLayout.setHorizontalGroup(
+            managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(managerBodyContainerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(managerBodyContainerLayout.createSequentialGroup()
+                        .addGroup(managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnOpenManageUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnOpenManageProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnOpenManageSale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblOpenManageeUser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOpenManageSale, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOpenManageProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36))))
+        );
+        managerBodyContainerLayout.setVerticalGroup(
+            managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(managerBodyContainerLayout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addGroup(managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOpenManageProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOpenManageProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOpenManageUser, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOpenManageeUser, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(managerBodyContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOpenManageSale, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblOpenManageSale, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44))
+            .addGroup(managerBodyContainerLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout managerContainerLayout = new javax.swing.GroupLayout(managerContainer);
+        managerContainer.setLayout(managerContainerLayout);
+        managerContainerLayout.setHorizontalGroup(
+            managerContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(managerBodyContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(managerNavContainer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        managerContainerLayout.setVerticalGroup(
+            managerContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(managerContainerLayout.createSequentialGroup()
+                .addComponent(managerNavContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(managerBodyContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(managerContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(managerContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnOpenManageProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenManageProductActionPerformed
+        openManageProductsForm();
+    }//GEN-LAST:event_btnOpenManageProductActionPerformed
+
+    private void btnOpenManageUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenManageUserActionPerformed
+        openManageUsersForm();
+    }//GEN-LAST:event_btnOpenManageUserActionPerformed
+
+    private void btnOpenManageSaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenManageSaleActionPerformed
+        openManageSalesForm();
+    }//GEN-LAST:event_btnOpenManageSaleActionPerformed
+
+    private void lblOpenManageProductMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOpenManageProductMouseClicked
+        openManageProductsForm();
+    }//GEN-LAST:event_lblOpenManageProductMouseClicked
+
+    private void lblOpenManageeUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOpenManageeUserMouseClicked
+        openManageUsersForm();
+    }//GEN-LAST:event_lblOpenManageeUserMouseClicked
+
+    private void lblOpenManageSaleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOpenManageSaleMouseClicked
+        openManageSalesForm();
+    }//GEN-LAST:event_lblOpenManageSaleMouseClicked
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        int confirmed = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to Logout?", "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION) {
+            currentUser.logout();
+            dispose(); // Close the window
+            // Optionally, perform actions to exit the application
+        }
+
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void openManageUsersForm() {
+        if ("Manager".equals(user.getPosition())) {
+            // Open ManagerForm with the user object
+            java.awt.EventQueue.invokeLater(() -> {
+                new ManageUsers(user).setVisible(true);
+                this.dispose();
+            });
+        } else {
+            JOptionPane.showMessageDialog(null, "You Dont Have Access.", "Error", JOptionPane.ERROR_MESSAGE);
+        }// Calls the UserController method to open Manage Users form
+    }
+
+    private void openManageProductsForm() {
+        if ("Manager".equals(user.getPosition())) {
+            // Open ManagerForm with the user object
+            java.awt.EventQueue.invokeLater(() -> {
+                new ManageProduct(user).setVisible(true);
+                this.dispose();
+            });
+        } else {
+            JOptionPane.showMessageDialog(null, "You Dont Have Access.", "Error", JOptionPane.ERROR_MESSAGE);
+        }// Calls the UserController method to open Manage Users form
+    }
+
+    private void openManageSalesForm() {
+        if ("Manager".equals(user.getPosition())) {
+            // Open ManagerForm with the user object
+            java.awt.EventQueue.invokeLater(() -> {
+                new ManageSales(user).setVisible(true);
+                this.dispose();
+            });
+        } else {
+            JOptionPane.showMessageDialog(null, "You Dont Have Access.", "Error", JOptionPane.ERROR_MESSAGE);
+        }// Calls the UserController method to open Manage Users form
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -111,13 +394,30 @@ public class ManagerDashboard extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {             
+            public void run() {
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnOpenManageProduct;
+    private javax.swing.JButton btnOpenManageSale;
+    private javax.swing.JButton btnOpenManageUser;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel lblOpenManageProduct;
+    private javax.swing.JLabel lblOpenManageSale;
+    private javax.swing.JLabel lblOpenManageeUser;
+    private javax.swing.JPanel managerBodyContainer;
+    private javax.swing.JPanel managerContainer;
+    private javax.swing.JPanel managerNavContainer;
     // End of variables declaration//GEN-END:variables
 }

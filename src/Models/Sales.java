@@ -11,18 +11,18 @@ package Models;
 import java.util.Date;
 
 public class Sales {
+
     private int salesId;
     private int userId;
     private int productId;
     private int soldQuantity;
     private double income;
-    private int invoiceId;
+    private String invoiceId;
     private String eminum;
     private Date issuedDate;
 
     // Constructors, getters, setters
-
-    public Sales(int salesId, int userId, int productId, int soldQuantity, double income, int invoiceId, String eminum, Date issuedDate) {
+    public Sales(int salesId, int userId, int productId, int soldQuantity, double income, String invoiceId, String eminum, Date issuedDate) {
         this.salesId = salesId;
         this.userId = userId;
         this.productId = productId;
@@ -31,6 +31,9 @@ public class Sales {
         this.invoiceId = invoiceId;
         this.eminum = eminum;
         this.issuedDate = issuedDate;
+    }
+
+    public Sales() {
     }
 
     public int getSalesId() {
@@ -73,11 +76,11 @@ public class Sales {
         this.income = income;
     }
 
-    public int getInvoiceId() {
+    public String getInvoiceId() {
         return invoiceId;
     }
 
-    public void setInvoiceId(int invoiceId) {
+    public void setInvoiceId(String invoiceId) {
         this.invoiceId = invoiceId;
     }
 
@@ -96,5 +99,5 @@ public class Sales {
     public void setIssuedDate(Date issuedDate) {
         this.issuedDate = issuedDate;
     }
-    
+
 }

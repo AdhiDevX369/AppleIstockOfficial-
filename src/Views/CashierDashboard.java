@@ -5,6 +5,7 @@
 package Views;
 
 import Controllers.CashierController;
+import Controllers.UserController;
 import Models.Product;
 import Models.ProductData;
 import Models.SaleData;
@@ -21,6 +22,8 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,13 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import org.slf4j.Logger;
-import org.slf4j.event.Level;
 
 /**
  *
@@ -50,6 +53,7 @@ public class CashierDashboard extends javax.swing.JFrame {
     private int totalQuantity;
     private DefaultListModel<String> invoiceListModel;
     private CashierController cashier;
+    private UserController currentUser;
 
     /**
      * Creates new form CashierDashboard
@@ -59,6 +63,22 @@ public class CashierDashboard extends javax.swing.JFrame {
         invoiceListModel = new DefaultListModel<>();
 
         cashier = new CashierController(user.getUserId(), user.getUsername(), user.getPassword(), user.getName(), user.getAddress(), user.getEmail(), user.getMobile(), user.getNic());
+        currentUser = new UserController();
+
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirmed = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to exit?", "Exit Confirmation",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirmed == JOptionPane.YES_OPTION) {
+                    System.exit(0); // Close the window
+                    // Optionally, perform actions to exit the application
+                }
+            }
+        });
 
         btnSerch.addActionListener(new ActionListener() {
             @Override
@@ -96,6 +116,8 @@ public class CashierDashboard extends javax.swing.JFrame {
                     status = "sold";
                 } else if (value == 1) {
                     status = "unsold";
+                } else if (value == 2) {
+                    status = "all";
                 } else {
                     String errorMessage = "Invalid selection. Please try again.";
                     JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
@@ -198,6 +220,7 @@ public class CashierDashboard extends javax.swing.JFrame {
 
             }
         });
+
         btnRemoveList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -428,7 +451,6 @@ public class CashierDashboard extends javax.swing.JFrame {
         sideBar = new javax.swing.JPanel();
         lblProfile = new javax.swing.JLabel();
         btnHome = new javax.swing.JButton();
-        btnSupport = new javax.swing.JButton();
         btnRefresh = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         lblHeader = new javax.swing.JLabel();
@@ -461,12 +483,10 @@ public class CashierDashboard extends javax.swing.JFrame {
         lblAvailableCategory = new javax.swing.JLabel();
         btnRefreshCtegory = new javax.swing.JButton();
         btnRemoveList = new javax.swing.JButton();
-        btnEditList = new javax.swing.JButton();
         btnBuy = new javax.swing.JButton();
         btnClearList = new javax.swing.JButton();
         lblTotalBill = new javax.swing.JLabel();
         lblTotalQty = new javax.swing.JLabel();
-        invoiceArea = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtSearch = new javax.swing.JTextField();
         btnSerch = new javax.swing.JButton();
@@ -500,16 +520,6 @@ public class CashierDashboard extends javax.swing.JFrame {
             }
         });
 
-        btnSupport.setBackground(new java.awt.Color(0, 153, 153));
-        btnSupport.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnSupport.setForeground(new java.awt.Color(255, 255, 255));
-        btnSupport.setText("Support");
-        btnSupport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSupportActionPerformed(evt);
-            }
-        });
-
         btnRefresh.setBackground(new java.awt.Color(0, 153, 153));
         btnRefresh.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnRefresh.setForeground(new java.awt.Color(255, 255, 255));
@@ -524,6 +534,11 @@ public class CashierDashboard extends javax.swing.JFrame {
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setText("LogOut");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         lblHeader.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(0, 153, 153));
@@ -593,7 +608,6 @@ public class CashierDashboard extends javax.swing.JFrame {
                         .addComponent(lblProfile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnHome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSupport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(23, 23, 23))
         );
@@ -606,18 +620,16 @@ public class CashierDashboard extends javax.swing.JFrame {
                 .addComponent(lblProfile, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(68, 68, 68)
                 .addComponent(btnHome, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSupport, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnRefresh, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        sideBarLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnHome, btnRefresh, btnSupport});
+        sideBarLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnHome, btnRefresh});
 
         navBar.setBackground(new java.awt.Color(0, 0, 0));
         navBar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -679,11 +691,12 @@ public class CashierDashboard extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        viewProductCategoryTable.setSelectionBackground(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(viewProductCategoryTable);
 
         invoiceList.setBackground(new java.awt.Color(204, 204, 204));
-        invoiceList.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        invoiceList.setForeground(new java.awt.Color(0, 153, 204));
+        invoiceList.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        invoiceList.setForeground(new java.awt.Color(0, 0, 0));
         jScrollPane3.setViewportView(invoiceList);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
@@ -753,7 +766,7 @@ public class CashierDashboard extends javax.swing.JFrame {
                         .addComponent(lblPrice)
                         .addGap(12, 12, 12)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtQty)
+                    .addComponent(txtQty, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                     .addComponent(txtPrice))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAddList, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -815,11 +828,6 @@ public class CashierDashboard extends javax.swing.JFrame {
         btnRemoveList.setForeground(new java.awt.Color(255, 255, 255));
         btnRemoveList.setText("Remove");
 
-        btnEditList.setBackground(new java.awt.Color(0, 102, 204));
-        btnEditList.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditList.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditList.setText("Edit");
-
         btnBuy.setBackground(new java.awt.Color(0, 153, 153));
         btnBuy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnBuy.setForeground(new java.awt.Color(255, 255, 255));
@@ -829,6 +837,11 @@ public class CashierDashboard extends javax.swing.JFrame {
         btnClearList.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnClearList.setForeground(new java.awt.Color(255, 255, 255));
         btnClearList.setText("Clear");
+        btnClearList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearListActionPerformed(evt);
+            }
+        });
 
         lblTotalBill.setBackground(new java.awt.Color(0, 0, 0));
         lblTotalBill.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -861,12 +874,9 @@ public class CashierDashboard extends javax.swing.JFrame {
                                     .addComponent(lblTotalBill, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(downPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnBuy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, downPanelLayout.createSequentialGroup()
-                                        .addComponent(btnEditList, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnRemoveList, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(btnClearList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                    .addComponent(btnClearList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnRemoveList, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnBuy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -875,45 +885,32 @@ public class CashierDashboard extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, downPanelLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(downPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(downPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(downPanelLayout.createSequentialGroup()
+                        .addComponent(lblAvailableCategory)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRefreshCtegory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55))
                     .addGroup(downPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(downPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnEditList)
                             .addComponent(btnRemoveList)
                             .addComponent(lblTotalBill))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(downPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnClearList)
                             .addComponent(lblTotalQty))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(downPanelLayout.createSequentialGroup()
-                        .addComponent(lblAvailableCategory)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnRefreshCtegory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(20, 20, 20))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuy, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22))))
         );
 
         viewProductData.add(downPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 750, 310));
 
         DashboardPane.addTab("", viewProductData);
-
-        javax.swing.GroupLayout invoiceAreaLayout = new javax.swing.GroupLayout(invoiceArea);
-        invoiceArea.setLayout(invoiceAreaLayout);
-        invoiceAreaLayout.setHorizontalGroup(
-            invoiceAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 760, Short.MAX_VALUE)
-        );
-        invoiceAreaLayout.setVerticalGroup(
-            invoiceAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
-        );
-
-        DashboardPane.addTab("", invoiceArea);
 
         navBar.add(DashboardPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 760, 580));
 
@@ -947,7 +944,7 @@ public class CashierDashboard extends javax.swing.JFrame {
         cmbFilterProduct.setBackground(new java.awt.Color(102, 102, 102));
         cmbFilterProduct.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         cmbFilterProduct.setForeground(new java.awt.Color(0, 153, 255));
-        cmbFilterProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Filter Produc By Sold", "Filter Produc By Unsold" }));
+        cmbFilterProduct.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Filter Produc By Sold", "Filter Produc By Unsold", "Filter All Products" }));
         navBar.add(cmbFilterProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 90, 200, 23));
 
         btnFilter.setBackground(new java.awt.Color(0, 0, 0));
@@ -992,7 +989,7 @@ public class CashierDashboard extends javax.swing.JFrame {
                 .addGroup(cashierContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(sideBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(navBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 6, Short.MAX_VALUE))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1036,9 +1033,25 @@ public class CashierDashboard extends javax.swing.JFrame {
         DashboardPane.setSelectedIndex(0);
     }//GEN-LAST:event_btnHomeActionPerformed
 
-    private void btnSupportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupportActionPerformed
-        DashboardPane.setSelectedIndex(1);
-    }//GEN-LAST:event_btnSupportActionPerformed
+    private void btnClearListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearListActionPerformed
+        loadProductData(); // Update the product table
+        invoiceListModel.clear(); // Clear the invoice list
+        lblTotalBill.setText(" ");
+        lblTotalQty.setText(" ");
+    }//GEN-LAST:event_btnClearListActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        int confirmed = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to Logout?", "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION) {
+            currentUser.logout();
+            dispose(); // Close the window
+            // Optionally, perform actions to exit the application
+        }
+
+    }//GEN-LAST:event_btnLogoutActionPerformed
     private void loadProductData() {
 
         List<ProductData> products = cashier.viewAllProductData(); // Retrieve product data
@@ -1164,7 +1177,6 @@ public class CashierDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnBuy;
     private javax.swing.JButton btnClearList;
     private javax.swing.JButton btnDone;
-    private javax.swing.JButton btnEditList;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnHome;
     private javax.swing.JButton btnLogout;
@@ -1172,11 +1184,9 @@ public class CashierDashboard extends javax.swing.JFrame {
     private javax.swing.JButton btnRefreshCtegory;
     private javax.swing.JButton btnRemoveList;
     private javax.swing.JButton btnSerch;
-    private javax.swing.JButton btnSupport;
     private javax.swing.JPanel cashierContainer;
     private javax.swing.JComboBox<String> cmbFilterProduct;
     private javax.swing.JPanel downPanel;
-    private javax.swing.JPanel invoiceArea;
     private javax.swing.JList<String> invoiceList;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton9;

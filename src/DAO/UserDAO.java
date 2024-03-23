@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import Controllers.CashierController;
@@ -19,17 +15,18 @@ import java.util.List;
 public class UserDAO {
 
     private DBController dbController;
+    private static User authenticatedUser = null;
 
     public UserDAO() {
-       dbController = DBController.getInstance(); // Assuming you have a DatabaseController class
+        dbController = DBController.getInstance(); // Assuming you have a DatabaseController class        
     }
 
     public User authenticateUser(String username, String password) {
-        User authenticatedUser = null;
+
         String query = "SELECT username, password, CONCAT(firstName, ' ', lastName) AS fullname, "
                 + "CONCAT(street, ', ', city, ', ', country) AS address, "
                 + "userid, position, mobile, email, nic FROM Users "
-                + "WHERE username = ? OR password = ?";
+                + "WHERE username = ? AND password = ?";
 
         try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -45,7 +42,7 @@ public class UserDAO {
                     String email = resultSet.getString("email");
                     String phone = resultSet.getString("mobile");
                     String nic = resultSet.getString("nic");
-                    
+
                     if ("Cashier".equals(userPosition)) {
                         authenticatedUser = new CashierController(userId, username, password, name, address, email, phone, nic);
                     } else if ("Manager".equals(userPosition)) {
@@ -89,9 +86,9 @@ public class UserDAO {
         }
     }
 
-    public List<String> searchUserData(String keyword) {
-        List<String> userData = new ArrayList<>();
-        String query = "SELECT username, password, CONCAT(firstName, ' ', lastName) AS fullname, "
+    public List<User> searchUserData(String keyword) {
+        List<User> userSearchDataList = new ArrayList<>();
+        String query = "SELECT userid, username, password, CONCAT(firstName, ' ', lastName) AS fullname, "
                 + "CONCAT(street, ', ', city, ', ', country) AS address, "
                 + "mobile, email, nic FROM Users "
                 + "WHERE username = ? OR firstName = ? OR lastName = ? OR street = ?OR city = ?OR country = ? OR email = ? OR mobile = ? OR nic = ?";
@@ -103,48 +100,183 @@ public class UserDAO {
             }
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                userData.add(resultSet.getString("username"));
-                userData.add(resultSet.getString("password"));
-                userData.add(resultSet.getString("fullname"));
-                userData.add(resultSet.getString("address"));
-                userData.add(resultSet.getString("mobile"));
-                userData.add(resultSet.getString("email"));
-                userData.add(resultSet.getString("nic"));
+            while (resultSet.next()) {
+                User searchUserData = new User();
+                searchUserData.setUserId(resultSet.getInt("userid"));
+                searchUserData.setUsername(resultSet.getString("username"));
+                searchUserData.setPassword(resultSet.getString("password"));
+                searchUserData.setName(resultSet.getString("fullname"));
+                searchUserData.setAddress(resultSet.getString("address"));
+                searchUserData.setMobile(resultSet.getString("mobile"));
+                searchUserData.setEmail(resultSet.getString("email"));
+                searchUserData.setNic(resultSet.getString("nic"));
+                userSearchDataList.add(searchUserData);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exceptions
         }
 
-        return userData;
+        return userSearchDataList;
     }
 
-    public List<List<String>> viewAllUserData() {
-        List<List<String>> allUserData = new ArrayList<>(); // List to hold data for all users
-        String query = "SELECT username, password, CONCAT(firstName, ' ', lastName) AS fullname, "
+    public String getFirstNameByID(int keyword) {
+        String firstName = null;
+        String query = "SELECT firstName FROM Users WHERE userid = ?";
+
+        try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, keyword);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                firstName = resultSet.getString("firstName");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+
+        return firstName;
+    }
+
+    public String getLastNameByID(int keyword) {
+        String lastName = null;
+        String query = "SELECT lastName FROM Users WHERE userid = ?";
+
+        try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, keyword);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                lastName = resultSet.getString("lastName");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+
+        return lastName;
+    }
+
+    public String getStreetByID(int keyword) {
+        String street = null;
+        String query = "SELECT street FROM Users WHERE userid = ?";
+
+        try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, keyword);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                street = resultSet.getString("street");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+
+        return street;
+    }
+
+    public String getCityByID(int keyword) {
+        String city = null;
+        String query = "SELECT city FROM Users WHERE userid = ?";
+
+        try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, keyword);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                city = resultSet.getString("city");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+
+        return city;
+    }
+
+    public String getCountryByID(int keyword) {
+        String country = null;
+        String query = "SELECT country FROM Users WHERE userid = ?";
+
+        try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, keyword);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                country = resultSet.getString("country");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+
+        return country;
+    }
+
+    public List<User> retrieveCashierUsers() {
+        List<User> cashierUsers = new ArrayList<>();
+        String query = "SELECT userid, username, password, CONCAT(firstName, ' ', lastName) AS fullname, "
+                + "CONCAT(street, ', ', city, ', ', country) AS address, "
+                + "mobile, email, nic FROM Users WHERE position = ?";
+
+        try (Connection connection = dbController.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, "Cashier");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                User cashierUser = new User();
+                cashierUser.setUserId(resultSet.getInt("userid"));
+                cashierUser.setUsername(resultSet.getString("username"));
+                cashierUser.setPassword(resultSet.getString("password"));
+                cashierUser.setName(resultSet.getString("fullname"));
+                cashierUser.setAddress(resultSet.getString("address"));
+                cashierUser.setMobile(resultSet.getString("mobile"));
+                cashierUser.setEmail(resultSet.getString("email"));
+                cashierUser.setNic(resultSet.getString("nic"));
+                cashierUsers.add(cashierUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+
+        return cashierUsers;
+    }
+
+    public List<User> viewAllUserData() {
+        List<User> allUserDataList = new ArrayList<>(); // List to hold data for all users
+        String query = "SELECT userid, username, password, CONCAT(firstName, ' ', lastName) AS fullname, "
                 + "CONCAT(street, ', ', city, ', ', country) AS address, "
                 + "mobile, email, nic FROM Users";
 
         try (Connection connection = dbController.getConnection(); Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                List<String> userData = new ArrayList<>();
-                userData.add(resultSet.getString("username"));
-                userData.add(resultSet.getString("password"));
-                userData.add(resultSet.getString("fullname"));
-                userData.add(resultSet.getString("address"));
-                userData.add(resultSet.getString("mobile"));
-                userData.add(resultSet.getString("email"));
-                userData.add(resultSet.getString("nic"));
-                allUserData.add(userData);
+                User userData = new User();
+                userData.setUserId(resultSet.getInt("userid"));
+                userData.setUsername(resultSet.getString("username"));
+                userData.setPassword(resultSet.getString("password"));
+                userData.setName(resultSet.getString("fullname"));
+                userData.setAddress(resultSet.getString("address"));
+                userData.setMobile(resultSet.getString("mobile"));
+                userData.setEmail(resultSet.getString("email"));
+                userData.setNic(resultSet.getString("nic"));
+                allUserDataList.add(userData);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exceptions
         }
 
-        return allUserData;
+        return allUserDataList;
     }
 
     public boolean updateUser(String username, String newPassword, String newFirstName, String newLastName,
@@ -192,5 +324,8 @@ public class UserDAO {
         }
     }
 
+    public static void logout() {
+        authenticatedUser = null; // Reset the current user upon logout
+    }
     // Other methods for CRUD operations on Users
 }

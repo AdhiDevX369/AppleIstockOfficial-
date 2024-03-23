@@ -7,6 +7,7 @@ package Controllers;
 import DAO.UserDAO;
 import Models.User;
 import Views.CashierDashboard;
+import Views.LoginForm;
 import Views.ManagerDashboard;
 import javax.swing.JOptionPane;
 
@@ -17,13 +18,17 @@ import javax.swing.JOptionPane;
 public class UserController {
 
     private UserDAO userDAO;
+    private ManagerDashboard managerDashboard;
+    private CashierDashboard cashierDashboard;
+    private LoginForm login;
+    private User authenticatedUser;
 
     public UserController() {
         userDAO = new UserDAO();
     }
 
     public boolean validateAndRedirect(String username, String password) {
-        User authenticatedUser = userDAO.authenticateUser(username, password);
+        authenticatedUser = userDAO.authenticateUser(username, password);
 
         if (authenticatedUser != null) {
             if (authenticatedUser instanceof CashierController) {
@@ -33,11 +38,11 @@ public class UserController {
                 openManagerDashboard(authenticatedUser);
                 return true; // Successful login as Manager
             } else {
-                JOptionPane.showMessageDialog(null, "Invalid user position.");
+                System.out.println("Invalid user position.");
                 // Handle unrecognized user position
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Invalid username or password.");
+            System.out.println("Invalid username or password.");
             // Handle invalid credentials
         }
         return false; // Failed login attempt
@@ -45,7 +50,7 @@ public class UserController {
 
     private void openCashierDashboard(User user) {
         if (user instanceof CashierController) {
-            CashierDashboard cashierDashboard = new CashierDashboard((CashierController) user);
+            cashierDashboard = new CashierDashboard((CashierController) user);
             cashierDashboard.setVisible(true);
             // Open CashierDashboard GUI using cashierDashboardController
         } else {
@@ -56,12 +61,22 @@ public class UserController {
 
     private void openManagerDashboard(User user) {
         if (user instanceof ManagerController) {
-            ManagerDashboard managerDashboard = new ManagerDashboard((ManagerController) user);
+            managerDashboard = new ManagerDashboard((ManagerController) user);
             managerDashboard.setVisible(true);
             // Open ManagerDashboard GUI using managerDashboardController
         } else {
             JOptionPane.showMessageDialog(null, "Invalid user type.");
             // Handle unexpected user type
         }
+    }
+
+    public void logout() {
+        UserDAO.logout(); // Call the logout method in UserDAO
+        openLoginForm();
+    }
+
+    private void openLoginForm() {
+        login = new LoginForm();
+        login.setVisible(true);
     }
 }

@@ -5,6 +5,9 @@
 package Views;
 
 import Controllers.UserController;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +21,22 @@ public class LoginForm extends javax.swing.JFrame {
      */
     public LoginForm() {
         initComponents();
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirmed = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to exit?", "Exit Confirmation",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirmed == JOptionPane.YES_OPTION) {
+                    System.exit(0); // Close the window
+                    // Optionally, perform actions to exit the application
+                    // For example: System.exit(0);
+                }
+            }
+        });
+
     }
 
     /**
@@ -45,7 +64,6 @@ public class LoginForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
-        setPreferredSize(new java.awt.Dimension(600, 400));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
@@ -98,6 +116,11 @@ public class LoginForm extends javax.swing.JFrame {
         btnExit.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnExit.setForeground(new java.awt.Color(204, 102, 0));
         btnExit.setText("EXIT");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -142,19 +165,34 @@ public class LoginForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-       String username = txtUsername.getText();
-    String password = new String(txtPassword.getPassword()); // Get password as a String
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword()); // Get password as a String
 
-    UserController userController = new UserController();
-    boolean loginSuccessful = userController.validateAndRedirect(username, password);
+        if (username.isEmpty() && password.isEmpty()) {
+            JOptionPane.showMessageDialog(LoginForm.this, "Please enter valid Username and Password.", "Empty Inputs", JOptionPane.WARNING_MESSAGE);
+        } else {
+            UserController userController = new UserController();
+            boolean loginSuccessful = userController.validateAndRedirect(username, password);
 
-    if (loginSuccessful) {
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(null, "Invalid username or password.");
-        // Handle invalid credentials
-    }
+            if (loginSuccessful) {
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(LoginForm.this, "Invalid Credentials Please Enter Valid Credentials.", "Invalid Inputs", JOptionPane.ERROR_MESSAGE);
+                // Handle invalid credentials
+            }
+        }
+
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        int confirmed = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to exit?", "Exit Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirmed == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,16 +208,24 @@ public class LoginForm extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LoginForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
